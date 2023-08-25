@@ -30,7 +30,6 @@ export const downloadVideo = async (req, res) => {
     const info = await ytdl.getInfo(videoUrl);
     const title = info.videoDetails.title;
 
-    // Convert the module URL to a directory path
     const modulePath = fileURLToPath(import.meta.url);
     const audioPath = path.join(
       path.dirname(modulePath),
