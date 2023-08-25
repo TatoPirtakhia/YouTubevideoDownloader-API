@@ -19,6 +19,7 @@ export const getTitle = async (req, res) => {
 
 export const downloadMusic = async (req, res) => {
   try {
+    console.log(req.body.link)
     const videoUrl = req.body.link;
     if (!ytdl.validateURL(videoUrl))
       return res.status(500).send("Invalid URL!");
@@ -45,6 +46,7 @@ export const downloadMusic = async (req, res) => {
         fs.unlinkSync(audioPath);
       });
     });
+    console.log('i"m done')
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal error");
