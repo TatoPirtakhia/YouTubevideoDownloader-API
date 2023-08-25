@@ -5,7 +5,8 @@ import Route from "./routes/routes.js";
 
 const server = express();
 server.use(bodyParser.json());
-server.use(cors({ origin: 'http://192.168.100.6:5173/' }));
+server.use(express.urlencoded({extended: true}))
+server.use(cors());
 
 
 server.use("/api", Route);
