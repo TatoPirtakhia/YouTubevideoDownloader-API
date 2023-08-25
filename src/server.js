@@ -9,6 +9,6 @@ server.use(cors({ origin: '*' }));
 
 
 server.use("/api", Route);
-server.listen(process.env.PORT || 3005, () =>
+server.listen(3005, () =>
   console.log("Server is listening at http://localhost:3005")
 );
