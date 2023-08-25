@@ -5,7 +5,8 @@ import Route from "./routes/routes.js";
 
 const server = express();
 server.use(bodyParser.json());
-server.use(cors());
+server.use(cors({ origin: '*' }));
+
 
 server.use("/api", Route);
 server.listen(process.env.PORT || 3005, () =>
