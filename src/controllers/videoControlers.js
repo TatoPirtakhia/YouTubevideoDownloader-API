@@ -56,7 +56,7 @@ export const downloadMusic = async (req, res) => {
 
     stream.on("end", () => {
       audioWriteStream.end(); 
-
+      console.log("i am in ")
       const fileStream = fs.createReadStream(audioPath);
       
       const sanitizedTitle = title.replace(/[^\w\s.-]/g, "_");
