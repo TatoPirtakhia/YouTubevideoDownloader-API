@@ -40,12 +40,12 @@ export const downloadMusic = async (req, res) => {
 
     const stream = ytdl(videoUrl, options);
 
-    const audioChunks = [];
+    let audioChunks = [];
     stream.on("data", (chunk) => {
       audioChunks.push(chunk);
     });
 
-    stream.on("end", async () => {
+    stream.on("end",  () => {
       const audioBuffer = Buffer.concat(audioChunks);
 
       const sanitizedTitle = title.replace(/[^\w\s.-]/g, "_");
@@ -55,7 +55,7 @@ export const downloadMusic = async (req, res) => {
       )}.mp3"`;
       res.setHeader("Content-Disposition", disposition);
       res.setHeader("Content-Type", "audio/mpeg");
-      audioChunks=[]
+        audioChunks=[];
       res.send(audioBuffer);
     });
   } catch (error) {
