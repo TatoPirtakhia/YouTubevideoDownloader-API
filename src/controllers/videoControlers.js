@@ -3,6 +3,9 @@ import path from "path";
 import ytdl from "ytdl-core";
 import fs from "fs";
 
+// Disable update check for ytdl-core
+process.env.YTDL_NO_UPDATE = 'true';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
