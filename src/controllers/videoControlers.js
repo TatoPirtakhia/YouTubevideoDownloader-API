@@ -43,16 +43,20 @@ export const downloadMusic = async (req, res) => {
     stream.pipe(audioWriteStream);
 
     audioWriteStream.on("finish", () => {
-      res.status(200).send(audioPath, `${title}.mp3`, () => {
+      const fileStream = fs.createReadStream(audioPath);
+      
+      res.setHeader("Content-Disposition", `attachment; filename="${title}.mp3"`);
+      res.setHeader("Content-Type", "audio/mpeg");
+      
+      fileStream.pipe(res);
+      
+      fileStream.on("end", () => {
         fs.unlinkSync(audioPath);
-        console.log('finish');
+        console.log('File deleted:', audioPath);
       });
     });
-
-
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal error");
   }
 };
-
