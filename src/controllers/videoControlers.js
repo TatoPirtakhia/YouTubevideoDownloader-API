@@ -1,7 +1,12 @@
+import { fileURLToPath } from "url";
+import path from "path";
 import ytdl from "ytdl-core";
 import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const tempDirectory = path.join(__dirname, "temp");
 
 export const getTitle = async (req, res) => {
   try {
@@ -14,6 +19,7 @@ export const getTitle = async (req, res) => {
     res.status(200).send(title);
   } catch (error) {
     console.log(error);
+    res.status(500).send("Error fetching title");
   }
 };
 
@@ -30,12 +36,7 @@ export const downloadMusic = async (req, res) => {
     const info = await ytdl.getInfo(videoUrl);
     const title = info.videoDetails.title;
 
-    const modulePath = fileURLToPath(import.meta.url);
-    const audioPath = path.join(
-      path.dirname(modulePath),
-      "temp",
-      `${title}.mp3`
-    );
+    const audioPath = path.join(tempDirectory, `${title}.mp3`);
     const audioWriteStream = fs.createWriteStream(audioPath);
 
     const stream = ytdl(videoUrl, options);
@@ -44,7 +45,7 @@ export const downloadMusic = async (req, res) => {
     audioWriteStream.on("finish", () => {
       res.status(200).download(audioPath, `${title}.mp3`, () => {
         fs.unlinkSync(audioPath);
-        console.log('finish')
+        console.log('finish');
       });
     });
   } catch (error) {
@@ -52,3 +53,4 @@ export const downloadMusic = async (req, res) => {
     res.status(500).send("Internal error");
   }
 };
+
