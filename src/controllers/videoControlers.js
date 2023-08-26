@@ -43,11 +43,13 @@ export const downloadMusic = async (req, res) => {
     stream.pipe(audioWriteStream);
 
     audioWriteStream.on("finish", () => {
-      res.status(200).download(audioPath, `${title}.mp3`, () => {
+      res.status(200).send(audioPath, `${title}.mp3`, () => {
         fs.unlinkSync(audioPath);
         console.log('finish');
       });
     });
+
+
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal error");
