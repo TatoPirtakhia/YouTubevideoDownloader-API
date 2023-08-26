@@ -2,7 +2,6 @@ import { fileURLToPath } from "url";
 import path from "path";
 import ytdl from "ytdl-core";
 import fs from "fs";
-import contentDisposition from "content-disposition";
 
 process.env.YTDL_NO_UPDATE = "true";
 
@@ -55,11 +54,13 @@ export const downloadMusic = async (req, res) => {
     const stream = ytdl(videoUrl, options);
     stream.pipe(audioWriteStream);
 
-    audioWriteStream.on("finish", () => {
+    stream.on("end", () => {
+      audioWriteStream.end(); 
+
       const fileStream = fs.createReadStream(audioPath);
       
       const sanitizedTitle = title.replace(/[^\w\s.-]/g, "_");
-      const disposition = contentDisposition(`${sanitizedTitle}.mp3`);
+      const disposition = `attachment; filename="${encodeURIComponent(sanitizedTitle)}.mp3"`;
       res.setHeader("Content-Disposition", disposition);
       res.setHeader("Content-Type", "audio/mpeg");
       
