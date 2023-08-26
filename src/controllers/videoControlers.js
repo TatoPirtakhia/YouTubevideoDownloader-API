@@ -46,7 +46,7 @@ export const downloadMusic = async (req, res) => {
     console.log('4')
     stream.pipe(audioWriteStream);
     console.log('5')
-    audioWriteStream.on("finish", () => {
+    stream.on("finish", () => {
       console.log('6')
       const fileStream = fs.createReadStream(audioPath);
       console.log('7')
