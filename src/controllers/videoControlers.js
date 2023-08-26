@@ -55,6 +55,7 @@ export const downloadMusic = async (req, res) => {
       )}.mp3"`;
       res.setHeader("Content-Disposition", disposition);
       res.setHeader("Content-Type", "audio/mpeg");
+      audioChunks=[]
       res.send(audioBuffer);
     });
   } catch (error) {
